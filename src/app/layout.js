@@ -1,5 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Sidebar from "@/components/sidebar";
+import News from "@/components/news";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,7 +13,19 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <div className="flex justify-between max-w-6xl mx-auto">
+          <aside>
+            <Sidebar />
+          </aside>
+
+          <main>{children}</main>
+
+          <section>
+            <News />
+          </section>
+        </div>
+      </body>
     </html>
   );
 }
