@@ -9,7 +9,6 @@ import Image from "next/image";
 
 export default function Sidebar() {
   const { data: session } = useSession();
-  console.log(session);
 
   return (
     <div className="flex flex-col p-3 justify-between h-screen">

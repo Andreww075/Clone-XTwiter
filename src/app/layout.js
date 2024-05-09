@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
               <Sidebar />
             </aside>
 
-            <main>{children}</main>
+            <main className="w-2xl flex-1 ">{children}</main>
 
             <section className="lg:flex-col p-3 h-screen border-l hidden lg:flex w-[24rem]">
               <div className="sticky top-0 bg-white py-2">
