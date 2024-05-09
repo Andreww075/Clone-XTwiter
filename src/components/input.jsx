@@ -11,11 +11,19 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { app } from "@/firebase";
+import {
+  addDoc,
+  collection,
+  getFirestore,
+  serverTimestamp,
+} from "firebase/firestore";
 
 export default function Input() {
   const { data: session } = useSession();
+  const db = getFirestore(app);
 
   const [text, setText] = useState("");
+  const [postLoading, setPostLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploading, setImageFileUploading] = useState(false);
@@ -62,6 +70,23 @@ export default function Input() {
         });
       }
     );
+  };
+
+  const handleSubmit = async () => {
+    setPostLoading(true);
+    const docRef = await addDoc(collection(db, "posts"), {
+      uid: session.user.uid,
+      name: session.user.username,
+      text,
+      profileImg: session.user.image,
+      timestamp: serverTimestamp(),
+      image: imageFileUrl,
+    });
+    setPostLoading(false);
+    setText('');
+    setImageFileUrl(null);
+    setSelectedFile(null);
+    location.reload();
   };
 
   if (!session) return null;
@@ -112,7 +137,13 @@ export default function Input() {
             onChange={addImageToPost}
             hidden
           />
-          <button>Post</button>
+          <button
+            className="bg-blue-400 text-white px-4 py-1.5 rounded-full font-bold shadow-md hover:brightness-95 disabled:opacity-50"
+            disabled={text.trim() === "" || postLoading || imageFileUploading}
+            onClick={handleSubmit}
+          >
+            Post
+          </button>
         </div>
       </div>
     </div>

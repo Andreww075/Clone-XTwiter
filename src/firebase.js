@@ -8,12 +8,12 @@ import { initializeApp } from "firebase/app";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: "clone-instagram-422520.firebaseapp.com",
-  projectId: "clone-instagram-422520",
-  storageBucket: "clone-instagram-422520.appspot.com",
-  messagingSenderId: "816421056866",
-  appId: "1:816421056866:web:75b947a186f76e0ab8fc3b",
-  measurementId: "G-XD4TLM834N"
+  authDomain: "clone-xtwitter.firebaseapp.com",
+  projectId: "clone-xtwitter",
+  storageBucket: "clone-xtwitter.appspot.com",
+  messagingSenderId: "168063597763",
+  appId: "1:168063597763:web:3e33170ed24129069f3676",
+  measurementId: "G-69RLYT77MN"
 };
 
 // Initialize Firebase
