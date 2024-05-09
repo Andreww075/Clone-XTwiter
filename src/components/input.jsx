@@ -2,13 +2,67 @@
 
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { HiOutlinePhotograph } from "react-icons/hi";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import { app } from "@/firebase";
 
 export default function Input() {
   const { data: session } = useSession();
 
   const [text, setText] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [imageFileUrl, setImageFileUrl] = useState(null);
+  const [imageFileUploading, setImageFileUploading] = useState(false);
+
+  const imagePickRef = useRef(null);
+
+  const addImageToPost = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      setImageFileUrl(URL.createObjectURL(file));
+    }
+  };
+
+  useEffect(() => {
+    if (selectedFile) {
+      uploadImageToStorage();
+    }
+  }, [selectedFile]);
+
+  const uploadImageToStorage = () => {
+    setImageFileUploading(true);
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + "-" + selectedFile.name;
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, selectedFile);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+      },
+      (error) => {
+        console.log(error);
+        setImageFileUploading(false);
+        setImageFileUrl(null);
+        setSelectedFile(null);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setImageFileUrl(downloadURL);
+          setImageFileUploading(false);
+        });
+      }
+    );
+  };
 
   if (!session) return null;
   return (
@@ -32,10 +86,31 @@ export default function Input() {
           onChange={(e) => setText(e.target.value)}
         ></textarea>
 
+        {selectedFile && (
+          <Image
+            loader={() => imageFileUrl}
+            src={imageFileUrl}
+            width={0}
+            height={0}
+            sizes="100vw"
+            style={{ width: "100%", height: "auto" }}
+            alt="image"
+            className={`object-cover cursor-pointer
+            ${imageFileUploading ? "animate-pulse" : ""}`}
+          />
+        )}
+
         <div className="flex items-center justify-between pt-2.5">
           <HiOutlinePhotograph
             onClick={() => imagePickRef.current.click()}
             className="h-10 w-10 p-2 text-sky-500 hover:bg-sky-100 rounded-full cursor-pointer"
+          />
+          <input
+            type="file"
+            ref={imagePickRef}
+            accept="image/*"
+            onChange={addImageToPost}
+            hidden
           />
           <button>Post</button>
         </div>
