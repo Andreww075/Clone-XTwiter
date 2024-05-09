@@ -1,6 +1,6 @@
-import NextAuth from "next-auth"
-import GoogleProvider from "next-auth/providers/google"
-const handler = NextAuth ({
+import NextAuth from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+const handler = NextAuth({
   // Configure one or more authentication providers
   providers: [
     GoogleProvider({
@@ -10,13 +10,15 @@ const handler = NextAuth ({
     // ...add more providers here
   ],
   callbacks: {
-    async session({session, token}) {
-      session.user.username = session.user.name;
+    async session({ session, token }) {
+      session.user.username = session.user.name
+        .split(" ")
+        .join("")
+        .toLocaleLowerCase();
       session.user.uid = token.sub;
       return session;
-    }
-  }
+    },
+  },
 });
 
-
-export { handler as GET, handler as POST } 
+export { handler as GET, handler as POST };
