@@ -56,6 +56,23 @@ export default function Icons({ id, uid }) {
     );
   }, [likes]);
 
+  const deletePost = async () => {
+    if (window.confirm("Are you sure you want to delete this post?")) {
+      if (session?.user?.uid === uid) {
+        deleteDoc(doc(db, "posts", id))
+          .then(() => {
+            console.log("Document successfully deleted!");
+            window.location.reload();
+          })
+          .catch((error) => {
+            console.error("Error removing document: ", error);
+          });
+      } else {
+        alert("You are not authorized to delete this post");
+      }
+    }
+  };
+
   return (
     <div className="flex justify-start gap-5 p-2 text-gray-500">
       <div className="flex items-center">
@@ -81,7 +98,12 @@ export default function Icons({ id, uid }) {
           )}
         </div>
 
-        <HiOutlineTrash className="h-10 w-10 cursor-pointer rounded-full  transition duration-500 ease-in-out p-2 hover:text-red-500 hover:bg-red-100" />
+        {session?.user?.uid === uid && (
+          <HiOutlineTrash
+            className="h-10 w-10 cursor-pointer rounded-full  transition duration-500 ease-in-out p-2 hover:text-red-500 hover:bg-red-100"
+            onClick={deletePost}
+          />
+        )}
       </div>
     </div>
   );
