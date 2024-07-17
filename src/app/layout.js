@@ -3,6 +3,7 @@ import "./globals.css";
 import Sidebar from "@/components/sidebar";
 import News from "@/components/news";
 import SessionWrapper from "@/components/session-wrapper";
+import CommentModal from "@/components/comment-modal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,6 +36,8 @@ export default function RootLayout({ children }) {
               <News />
             </section>
           </div>
+
+          <CommentModal />
         </body>
       </html>
     </SessionWrapper>

@@ -4,7 +4,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { AiFillHome } from "react-icons/ai";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { HiDotsHorizontal } from 'react-icons/hi'
+import { FaCheck } from "react-icons/fa6";
 import Image from "next/image";
 
 export default function Sidebar() {
@@ -56,7 +56,7 @@ export default function Sidebar() {
             <h4 className="font-bold">{session.user.name}</h4>
             <p className="text-gray-500">@{session.user.username}</p>
           </div>
-          <HiDotsHorizontal className="h-5 xl:ml-8 hidden xl:inline" />
+          <FaCheck className="h-5 xl:ml-8 hidden xl:inline" />
         </div>
       )}
     </div>

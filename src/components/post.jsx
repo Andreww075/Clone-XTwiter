@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { HiDotsHorizontal } from "react-icons/hi";
+import { FaCheck } from "react-icons/fa6";
 import Icons from "./icons";
 
 export default function Post({ post, id }) {
@@ -18,7 +18,7 @@ export default function Post({ post, id }) {
             <h4 className="font-bold text-sm truncate">{post?.name}</h4>
             <span className="text-xs truncate">@{post?.username}</span>
           </div>
-          <HiDotsHorizontal className="text-sm" />
+          <FaCheck className="text-sm" />
         </div>
 
         <Link href={`/posts/${id}`}>
