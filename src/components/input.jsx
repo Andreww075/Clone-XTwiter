@@ -92,6 +92,7 @@ export default function Input() {
   if (!session) return null;
   return (
     <div className="flex border-b border-gray-200 p-3 space-x-3 w-full">
+      <p>Test</p>
       <div className="h-20">
         <Image
           loader={() => session.user.image}

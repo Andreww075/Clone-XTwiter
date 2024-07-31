@@ -7,6 +7,8 @@ import {
 } from "firebase/firestore";
 import { app } from "@/firebase";
 import Post from "./post";
+import { signIn, signOut, useSession } from "next-auth/react";
+import ButtonSign from "./button-sign";
 
 export default async function Feed() {
   const db = getFirestore(app);
@@ -20,6 +22,7 @@ export default async function Feed() {
 
   return (
     <div>
+      <ButtonSign />
       {data.map((post) => (
         <Post key={post.id} post={post} id={post.id} />
       ))}
